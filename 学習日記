@@ -23,3 +23,92 @@ for i in a:
     print(i)
 
 リストの操作について、基本的なことの反復練習をした。paizaを順に進めている
+
+
+(x,y)がN個与えられ、A番目の点とB番目の点の距離を求める問題
+x座標が入る箱と、y座標が入る箱を用意すればいい。インデックス番号をA-1とかにしたら指定できる
+N,A,B=[int(x) for x in input().split()]
+
+X=[]
+Y=[]
+
+for i in range(N):
+    x_i,y_i=[int(x) for x in input().split()] # 行ごとに座標を受け取る
+    X.append(x_i) # 箱詰めする
+    Y.append(y_i)　# 箱詰めする
+
+d= abs(X[A-1]-X[B-1])+abs(Y[A-1]-Y[B-1])
+print(d)
+
+二重ループの仕組みを理解して、適切に二次元配列を受け取って表示することができた
+# N=int(input())
+N,K=[int(x) for x in input().split()]
+
+for i in range(N):
+    a=list(map(int,input().split()))
+    for j in range(K):
+        if j<K-1:
+            print(a[j],end=" ")
+        else:
+            print(a[j])
+
+階段の出力　意外と苦戦した。紙に書いて整理したらわかった
+Nは単に回数ではなく、１からNまで動いて欲しかったので、range(N)ではいかん
+N=int(input())
+for k in range(1,N+1):
+    for i in range(1,k+1):# 1 からkまでの数字を横に並べる
+        if i<k:
+            print(i,end=" ")
+        else:
+            print(i)
+
+N以下の素数判定プログラム。自力で全部考えて実装できた嬉しい
+よくあるのはN以下の数で片っ端から割っていくやつやけど、偶数で割ってみたりしているのが無駄やなぁと思っていた。
+そこで、素数を入れる配列primeを作り、判定対象の整数をこの配列prime内の数でのみ割ってみることにした。そうすれば計算回数が大幅に減る。
+また、素数リストで割った時の余りが全て０以外なら素数であり、言い換えれば１つでも余りが０になれば素数でない。
+これは、「余りを全て掛け合わせて０になる」かどうかを調べれば良い。１つでも０があれば積は０であり、素数でない。
+このようにして新たな素数を発見し、素数を入れる配列primeに追加していく。
+課題：別に19が素数であるかを調べるのに17で割る必要はない。primeの要素全てで割っていくのではなく、途中の√N までの段階で止めればより効率化される。
+
+N=int(input())
+prime=[2]
+for k in range(3,N+1):
+    s=1
+    for m in prime:
+        s=s*(k%m)
+    if s!=0:
+        prime.append(k)
+print(len(prime))
+
+
+名前、点数　の形で入力される場合
+下のように、２次元配列として受け取り、forの中ではそれぞれの行に対して各要素をname,scoreという形で受け取るといい
+そうすることで、int(score)の処理がわかりやすいし、コード全体としても直感的でスッキリする
+n=int(input())
+
+results=[[x for x in input().split()] for _ in range(n)]
+
+k,l=[int(x) for x in input().split()]
+
+for name,score in results:
+    if k<=int(score)<=l:
+        print(name)
+
+動的配列というものが突然出てきた。かなり苦戦した。
+クエリによって入力の文字数が異なるので、split()を正しく適用できているかとかが大事だったっぽい
+
+N,Q=[int(x) for x in input().split()]
+an=[int(x) for x in input().split()]
+
+query=[]
+for i in range(Q):
+    query.append(input())
+   
+for q in query:
+    if q[0] == "2":
+        print(*an)
+    elif q[0] =="1":
+        del an[-1]
+    else:
+        qw=q.split()
+        an.append(int(qw[1]))
