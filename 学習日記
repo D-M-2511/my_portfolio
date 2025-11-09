@@ -9,3 +9,17 @@ python 3
 paizaでBランクになった。
 リスト内包表記について、かなり慣れた。
 ごく基本的なことではあるが、繰り返し練習する中で、息をするように（手癖のように）書けるコードも出てきた
+
+2025/11/09
+N,M,K=[int(x) for x in input().split()]
+a=[int(x) for x in input().split()]
+# b=[int(x) for x in input().split()]
+
+# .appendは、元の配列を直接変更する。返り値自体はNone
+# del文の文法はappendとは違う。del 配列[消したい要素番号]　元の配列自体を変更する
+# .insert(場所,要素) で指定位置に挿入
+a.insert(M-1,K)
+for i in a:
+    print(i)
+
+リストの操作について、基本的なことの反復練習をした。paizaを順に進めている
