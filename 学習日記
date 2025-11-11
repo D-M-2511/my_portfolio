@@ -112,3 +112,188 @@ for q in query:
     else:
         qw=q.split()
         an.append(int(qw[1]))
+
+2025/11/10
+
+今までは主にリストを使ってきた。辞書にはまだ慣れない
+N,M=[int(x) for x in input().split()]
+# a=[[x for x in input().split()] for _ in range(M)]
+b={}
+for i in range(N):
+    # a.append(x for x in input().split()) ←これはダメ。チャッピーによると、これだと「リスト内包表記のオブジェクト」を入れてるだけで、実際のリストの中身が追加されてない。
+
+    key,value=input().split()
+    b[key]=value
+
+for i in range (M):
+    key=input()
+    if key in b: ←if の条件文でinput()=b と書いていたが、そうすると次に出てくるinput()が違うものになってしまう。何回か同じ中身のinputを使いたいので、変数keyに代入しておく
+        print(b[key])
+    else:
+        print(-1)
+
+[::-1]で反転って変わった文法やと思ってたけど、[start:stop:step]の一部省略なんやな
+
+paizaのB問題解いた。
+N,K=[int(x) for x in input().split()]
+prices=[[int(x) for x in input().split()] for _ in range(N)]
+
+trans_prices=[[0]*N for _ in range(K)]
+for i in range(N):
+    for j in range(K):
+        trans_prices[j][i]=prices[i][j]
+
+mi=[]
+for i in range(K):
+    mi.append(min(trans_prices[i]))
+# print(mi)
+
+# mi リストのi番目が、pricesリストのどこにあるかを探す
+# mi[0] が、prices[0][0] と一致するので、0を返す。これが店番号を控えるための鍵
+# 二重ループを作る。mi[i]に対して、prices[j][i]が一致すればjを返す。
+# mi[1] が、prices[2][1] と一致するので、2を返す。
+# mi[2] が、prices[2][2] と一致するので、２を返す。
+# 返ってきた値たちで集合を作り、その要素すうをプリントする
+
+ans=set()
+for i in range(K):
+    for j in range(N):
+        if mi[i]==prices[j][i]:
+            ans.add(j)
+print(len(ans))
+
+自分なりにコメントで考え整理しながらやると、見通しよく進められた
+    
+2025/11/11
+計算式を文字列で送り込んでくる問題に悪戦苦闘
+S=input()
+li=[S[i] for i in range(len(S))]
+# print(li)
+N=len(S)
+# 作戦：liのi番目が+か-になったら、それまでの文字列を数値変換して演算
+
+# 最初の項だけは普通に取り出す
+for i in range(N):
+    if li[i]=="+" or li[i]=="-":
+        ans=int(li[:i])
+        del li[:i]
+        break
+# n_1 は最初に演算子がきた配列番号
+
+for i in range(n_1,N):
+    if li[0] =="+":
+        for j in range(1,len(li)):
+            # 次の演算子を探す
+            if li[j]=="+" or li[j]=="-":
+                num=int(li[1:j])
+                ans+=num
+                del li[1:j]
+                if li==[]:
+                    break
+
+    elif li[0] =="-":
+        for j in range(1,len(li)):
+            if li[j]=="+" or li[j]=="-":
+                num=int(li[1:j])
+                ans-=num
+                del li[1:j]
+                if li == []:
+                    break        
+print(ans)
+
+自分でここまで書いたけどエラー出る。int(["1","5"])みたいなのを15に直してほしい感覚だけど、リストに入れてもあかんのやな
+で、チャッピーに助言得て次のようにかけた。これは成功。
+
+S=input()
+# １文字区切りのリストにする
+li=[x for x in S]
+# print(li)
+
+# １文字ずつ、演算子か数字かを判別。
+# 数字なら一文字ずつ文字列として連結していく
+# 演算子なら、そこまで連結してきた文字と演算する
+# 演算したら、そこまでの文字列をリセットする
+# 最初と最後だけは特別に処理する
+
+enzanshi="+"
+numset=""
+ans=0
+
+for mozi in li:
+    if mozi in "+-":
+        if enzanshi == "+":
+            ans+=int(numset)
+        elif enzanshi == "-":
+            ans-=int(numset)
+        numset=""
+        enzanshi=mozi
+    else:
+        numset+=mozi
+        
+if enzanshi == "+":
+    ans+=int(numset)
+elif enzanshi == "-":
+    ans-=int(numset)
+    
+print(ans)
+
+辞書、ほんと慣れないけどこれが基本やから抑えとこう↓
+n=int(input())
+a={} # からの辞書を作成
+for i in range(n):
+    key,value = input().split() # この行は[key,value]としても問題ない
+    a[key]=value # 辞書に要素を追加するにはこうやる！！
+
+S=input()
+print(a[S])
+
+
+辞書のキーで並び替えるとか、値だけ抜き出すとか、意外と愚直にやるのが模範解答らしい
+n=int(input())
+
+dmg={}
+
+for i in range(n):
+    s=input()
+    dmg[s]=0
+
+m=int(input())
+
+for i in range(m):
+    k,v=input().split()
+    v=int(v)
+    dmg[k]+=v
+
+# keys()でキーを取り出し、list()でリストにして、.sort()で並び替える
+names=list(dmg.keys())
+
+for name in sorted(names):
+    print(dmg[name])
+
+辞書の問題。初見で「はー無理やん」って思ったけどコメント活用して考え整理したらなんかいけた。超気持ちいい
+# p,q,rはA,B,Cの人数
+p,q,r=[int(x) for x in input().split()]
+
+A_to_B = {}
+B_to_C = {}
+
+for i in range(p):
+    k,v=input().split()
+    k=int(k)
+    v=int(v)
+    A_to_B[k] = v
+
+for i in range(q):
+    k,v=input().split()
+    k=int(k)
+    v=int(v)
+    B_to_C[k] = v
+
+# A_to_B[i]が示す値は、Bグループのキーになる。これをBkとすると、
+# B_to_C[Bk-1]が示す値が、Cグループの担当者。それ(ans)を出力する。
+# iをi=1からi=pまで動かす
+
+for i in range(1,p+1):
+    Bk=A_to_B[i]
+    ans=B_to_C[Bk]
+    print(i,ans)
