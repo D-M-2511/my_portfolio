@@ -380,3 +380,6 @@ https://www.youtube.com/watch?v=fAJ_BjLd3Ro
 stu.sort(key=lambda x: (x["height"], -x["month"], x["name"]))
 for s in stu:
     print(s["name"])
+
+2025/11/28
+pandasについて基本的なことを学んだ
